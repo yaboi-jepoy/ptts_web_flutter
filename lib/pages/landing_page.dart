@@ -22,20 +22,25 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        trailing: CupertinoButton(
-          onPressed: () {
-            // ignore: avoid_print
-            print("sup gay fucker");
-          },
-          child: Text(
-            "Admin",
-            style: TextStyle(color: CupertinoColors.systemBlue),
-            overflow: TextOverflow.visible,
+        trailing: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: CupertinoButton(
+            onPressed: () {
+              // ignore: avoid_print
+              print("sup gay fucker");
+            },
+            child: Text(
+              "Admin",
+              style: TextStyle(color: CupertinoColors.systemBlue),
+            ),
           ),
         ),
-        middle: Text(
-          'Public Transport TimeTable System',
-          style: TextStyle(color: CupertinoColors.black, fontSize: 24),
+        middle: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            'Public Transport TimeTable System',
+            style: TextStyle(color: CupertinoColors.black, fontSize: 24),
+          ),
         ),
       ),
 

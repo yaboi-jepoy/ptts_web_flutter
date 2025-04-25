@@ -18,7 +18,8 @@ class TerminalCard extends StatelessWidget {
       child: Center(
         child: CupertinoButton(
           onPressed: () {
-            print("push to " + terminalType + " - " + terminalName);
+            // ignore: avoid_print
+            print("push to $terminalType - $terminalName");
             Navigator.push(
               context,
               CupertinoPageRoute(

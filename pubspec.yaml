@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   responsive_grid_list: ^1.4.0
   responsive_layout_grid: ^1.1.2
+  davi: ^4.0.1
 
 dev_dependencies:
   flutter_test:
