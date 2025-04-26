@@ -21,5 +21,5 @@ var terminals = [
   ["UV", "Novaliches Bayan"],
   ["UV", "Farmer's Cubao"],
   ["Multi", "Shopwise - Ali Mall"],
-  ["EJeep", "Savemore Novaliches"],
+  ["Modern Jeep", "Savemore Novaliches"],
 ];

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:ptts_web_flutter/elements/db_tables.dart';
 import 'package:ptts_web_flutter/elements/sample_data.dart';
-import 'package:ptts_web_flutter/functions/add_functions.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});
@@ -11,6 +10,8 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
+  // database querying
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -40,7 +41,6 @@ class _AdminPageState extends State<AdminPage> {
                   tableTitle: 'Vehicles',
                   tableColumns: ['Vehicle No.', 'Plate', 'Capacity'],
                   tableRows: vehicles,
-                  buttonPopup: AddVehicles(),
                 ),
 
                 // add new driver
@@ -53,7 +53,6 @@ class _AdminPageState extends State<AdminPage> {
                     'Age',
                   ],
                   tableRows: drivers,
-                  buttonPopup: AddDrivers(),
                 ),
 
                 // add new conductors
@@ -66,7 +65,6 @@ class _AdminPageState extends State<AdminPage> {
                     'Age',
                   ],
                   tableRows: conductors,
-                  buttonPopup: AddConductors(),
                 ),
 
                 // add new terminals
@@ -74,7 +72,6 @@ class _AdminPageState extends State<AdminPage> {
                   tableTitle: 'Terminals',
                   tableColumns: ['Type', 'Location'],
                   tableRows: terminals,
-                  buttonPopup: AddTerminal(),
                 ),
               ],
             ),

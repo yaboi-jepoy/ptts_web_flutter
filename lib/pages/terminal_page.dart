@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:ptts_web_flutter/elements/db_tables.dart';
 import 'package:ptts_web_flutter/elements/terminal_image.dart';
 import 'package:ptts_web_flutter/elements/vehicles_in_terminal.dart';
 
@@ -45,7 +46,24 @@ class TerminalPage extends StatelessWidget {
             maxWidth: MediaQuery.of(context).size.width * .75,
           ),
           child: SingleChildScrollView(
-            child: Column(children: [TerminalImage(), VehiclesInTerminal()]),
+            child: Column(
+              children: [
+                TerminalImage(),
+                DbTables(
+                  tableTitle: 'Available Vehicles',
+                  tableColumns: [
+                    'Trip#',
+                    'Vehicle No.',
+                    'From',
+                    'To',
+                    'Driver No.',
+                    'Conductor No.',
+                  ],
+                  tableRows: [],
+                  hideButton: true,
+                ),
+              ],
+            ),
           ),
         ),
       ),

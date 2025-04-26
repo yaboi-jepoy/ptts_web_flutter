@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
-import 'pages/landing_page.dart';
+import 'package:ptts_web_flutter/pages/admin_page.dart';
+import 'package:ptts_web_flutter/pages/landing_page.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
   debugPaintSizeEnabled = false;
 }
@@ -15,9 +16,8 @@ class MyApp extends StatelessWidget {
     return CupertinoApp(
       debugShowCheckedModeBanner: false,
       theme: CupertinoThemeData(
-        textTheme: CupertinoTextThemeData(
-          textStyle: TextStyle(color: CupertinoColors.black),
-        ),
+        brightness: Brightness.light,
+        textTheme: CupertinoTextThemeData(),
       ),
       home: LandingPage(),
     );

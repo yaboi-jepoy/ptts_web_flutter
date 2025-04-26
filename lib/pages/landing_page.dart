@@ -3,7 +3,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:ptts_web_flutter/elements/terminal_card.dart';
 import 'package:ptts_web_flutter/pages/admin_page.dart';
-import 'package:ptts_web_flutter/services/database_service.dart';
 import 'package:responsive_layout_grid/responsive_layout_grid.dart';
 import 'package:ptts_web_flutter/elements/sample_data.dart';
 
@@ -15,7 +14,6 @@ class LandingPage extends StatefulWidget {
 }
 
 // access database
-final DatabaseService _databaseService = DatabaseService.instance;
 
 class _LandingPageState extends State<LandingPage> {
   @override

@@ -7,13 +7,17 @@ class DbTables extends StatefulWidget {
     required this.tableTitle,
     required this.tableColumns,
     required this.tableRows,
-    required this.buttonPopup,
+    this.buttonPopup = const CupertinoAlertDialog(
+      title: Text('not yet configured'),
+    ),
+    this.hideButton = false,
   });
 
   final String tableTitle;
   final List<String> tableColumns;
   final List<List<String>> tableRows;
   final Widget buttonPopup;
+  final bool hideButton;
 
   @override
   State<DbTables> createState() => _DbTablesState();
@@ -65,28 +69,33 @@ class _DbTablesState extends State<DbTables> {
           ),
         ),
         // Button
-        ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * .15,
-            maxHeight: MediaQuery.of(context).size.height * .15,
-          ),
-          child: CupertinoButton(
-            onPressed: () {
-              showCupertinoDialog(
-                barrierDismissible: true,
-                context: context,
-                builder: (_) => widget.buttonPopup,
-              );
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(CupertinoIcons.add_circled),
-                Text(' Add ${widget.tableTitle}'),
-              ],
+        // hide as requested
+        if (!widget.hideButton)
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * .15,
+              maxHeight: MediaQuery.of(context).size.height * .15,
+            ),
+            child: CupertinoButton(
+              onPressed: () {
+                showCupertinoDialog(
+                  barrierDismissible: true,
+                  context: context,
+                  builder: (_) => widget.buttonPopup,
+                );
+              },
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(CupertinoIcons.add_circled),
+                    Text(' Add ${widget.tableTitle}'),
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
       ],
     );
   }
