@@ -1,7 +1,11 @@
+// ignore_for_file: unused_element
+
 import 'package:flutter/cupertino.dart';
 import 'package:ptts_web_flutter/elements/terminal_card.dart';
+import 'package:ptts_web_flutter/pages/admin_page.dart';
 import 'package:ptts_web_flutter/services/database_service.dart';
 import 'package:responsive_layout_grid/responsive_layout_grid.dart';
+import 'package:ptts_web_flutter/elements/sample_data.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -9,14 +13,6 @@ class LandingPage extends StatefulWidget {
   @override
   State<LandingPage> createState() => _LandingPageState();
 }
-
-// sample data
-var terminals = [
-  ["UV", "Novaliches Bayan"],
-  ["UV", "Farmer's Cubao"],
-  ["Multi", "Shopwise - Ali Mall"],
-  ["EJeep", "Savemore Novaliches"],
-];
 
 // access database
 final DatabaseService _databaseService = DatabaseService.instance;
@@ -32,6 +28,10 @@ class _LandingPageState extends State<LandingPage> {
             onPressed: () {
               // ignore: avoid_print
               print("sup gay fucker");
+              Navigator.push(
+                context,
+                CupertinoPageRoute(builder: (context) => AdminPage()),
+              );
             },
             child: Text(
               "Admin",

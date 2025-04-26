@@ -1,14 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:ptts_web_flutter/elements/terminal_image.dart';
 import 'package:ptts_web_flutter/elements/vehicles_in_terminal.dart';
-
-// sample data
-var vehicles = [
-  ["039", "Ramon", "3", "Loading"],
-  ["29", "Juniper", "18", "Idle"],
-  ["43", "Antonio", "18", "Idle"],
-];
 
 class TerminalPage extends StatelessWidget {
   final String terminalType;
