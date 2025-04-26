@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:ptts_web_flutter/elements/terminal_card.dart';
+import 'package:ptts_web_flutter/services/database_service.dart';
 import 'package:responsive_layout_grid/responsive_layout_grid.dart';
 
 class LandingPage extends StatefulWidget {
@@ -16,6 +17,9 @@ var terminals = [
   ["Multi", "Shopwise - Ali Mall"],
   ["EJeep", "Savemore Novaliches"],
 ];
+
+// access database
+final DatabaseService _databaseService = DatabaseService.instance;
 
 class _LandingPageState extends State<LandingPage> {
   @override

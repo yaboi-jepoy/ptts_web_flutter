@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ptts_web_flutter/elements/terminal_image.dart';
+import 'package:ptts_web_flutter/elements/vehicles_in_terminal.dart';
 
 // sample data
 var vehicles = [
@@ -51,48 +53,7 @@ class TerminalPage extends StatelessWidget {
             maxWidth: MediaQuery.of(context).size.width * .75,
           ),
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsetsGeometry.all(30),
-                  child: Placeholder(), // insert image here
-                ),
-                DataTable(
-                  dividerThickness: 3,
-                  border: TableBorder.all(),
-                  columns: <DataColumn>[
-                    DataColumn(label: Text("Vehicle No.")),
-                    DataColumn(
-                      label: Text("Driver", textAlign: TextAlign.center),
-                    ),
-                    DataColumn(label: Text("Available")),
-                    DataColumn(label: Text("Status")),
-                  ],
-                  rows: <DataRow>[
-                    DataRow(
-                      cells: <DataCell>[
-                        DataCell(
-                          CupertinoButton(
-                            child: Text("0428"),
-                            onPressed: () {},
-                          ),
-                        ),
-                        DataCell(
-                          CupertinoButton(
-                            child: Text("Ramon"),
-                            onPressed: () {},
-                          ),
-                        ),
-                        DataCell(
-                          CupertinoButton(child: Text(""), onPressed: () {}),
-                        ),
-                        DataCell(Text('')),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            child: Column(children: [TerminalImage(), VehiclesInTerminal()]),
           ),
         ),
       ),

@@ -4,7 +4,7 @@ import 'pages/landing_page.dart';
 
 void main() {
   runApp(const MyApp());
-  debugPaintSizeEnabled = true;
+  debugPaintSizeEnabled = false;
 }
 
 class MyApp extends StatelessWidget {
