@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ptts_web_flutter/elements/insert_dialog.dart';
 
 class DbTables extends StatefulWidget {
   const DbTables({
@@ -8,11 +7,13 @@ class DbTables extends StatefulWidget {
     required this.tableTitle,
     required this.tableColumns,
     required this.tableRows,
+    required this.buttonPopup,
   });
 
   final String tableTitle;
   final List<String> tableColumns;
   final List<List<String>> tableRows;
+  final Widget buttonPopup;
 
   @override
   State<DbTables> createState() => _DbTablesState();
@@ -40,7 +41,7 @@ class _DbTablesState extends State<DbTables> {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: DataTable(
-            headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
+            headingRowColor: WidgetStateProperty.all(Colors.grey[200]),
             columns:
                 widget.tableColumns
                     .map(
@@ -71,28 +72,10 @@ class _DbTablesState extends State<DbTables> {
           ),
           child: CupertinoButton(
             onPressed: () {
-              showDialog(
+              showCupertinoDialog(
+                barrierDismissible: true,
                 context: context,
-                builder:
-                    (_) => AlertDialog(
-                      title: Text('Add ${widget.tableTitle}'),
-                      content: Text(
-                        'Enter details to add a new ${widget.tableTitle}.',
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            // Add your logic here
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('Add'),
-                        ),
-                      ],
-                    ),
+                builder: (_) => widget.buttonPopup,
               );
             },
             child: Row(
