@@ -1,9 +1,13 @@
+import 'package:PTTS/pages/landing_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
-import 'package:ptts_web_flutter/pages/admin_page.dart';
-import 'package:ptts_web_flutter/pages/landing_page.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() async {
+  // init ffi for sqlite
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
+
   runApp(const MyApp());
   debugPaintSizeEnabled = false;
 }

@@ -1,6 +1,7 @@
+import 'package:PTTS/database/database_service.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:ptts_web_flutter/elements/db_tables.dart';
-import 'package:ptts_web_flutter/elements/sample_data.dart';
+import 'package:PTTS/elements/db_tables.dart';
+import 'package:PTTS/elements/sample_data.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});
@@ -10,7 +11,13 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
-  // database querying
+  // define database access
+  late final DatabaseService _databaseService = DatabaseService.instance;
+
+  // vehicles
+  String? _plate;
+  int _capacity = 0;
+  String? _type;
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +43,84 @@ class _AdminPageState extends State<AdminPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                CupertinoButton(
+                  child: Text('print'),
+                  onPressed: () async {
+                    //! add the dummy data here
+                    await _databaseService.getVehicles();
+                  },
+                ),
                 // add new vehicle
                 DbTables(
                   tableTitle: 'Vehicles',
-                  tableColumns: ['Vehicle No.', 'Plate', 'Capacity'],
+                  tableColumns: ['Plate', 'Capacity', 'Vehicle Type'],
                   tableRows: vehicles,
+                  buttonPopup: CupertinoAlertDialog(
+                    title: Text("Add Vehicle"),
+                    content: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 16,
+                            bottom: 4,
+                            left: 4,
+                            right: 4,
+                          ),
+                          child: CupertinoTextField(
+                            placeholder: 'Plate',
+                            textAlign: TextAlign.center,
+                            onChanged: (value) {
+                              _plate = value;
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: CupertinoTextField(
+                            placeholder: 'Capacity',
+                            textAlign: TextAlign.center,
+                            onSubmitted: (value) {
+                              _capacity = int.parse(value);
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: CupertinoTextField(
+                            placeholder: 'Vehicle Type',
+                            textAlign: TextAlign.center,
+                            onChanged: (value) {
+                              _type = value;
+                            },
+                          ),
+                        ),
+                        CupertinoButton(
+                          child: Text('Add'),
+                          onPressed: () {
+                            // check if plate or type is null
+                            // do nothing if null
+                            if (_plate == null || _type == null) return;
+                            // else insert to table
+                            _databaseService.addVehicle(
+                              _plate.toString(),
+                              _capacity,
+                              _type.toString(),
+                            );
+
+                            // set variables back to null
+                            // for insertion again later
+                            print(
+                              'pushed $_plate, $_capacity, $_type to table',
+                            );
+                            _plate = null;
+                            _capacity = 0;
+                            _type = null;
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
 
                 // add new driver

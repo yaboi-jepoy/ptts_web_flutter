@@ -1,10 +1,11 @@
 // ignore_for_file: unused_element
 
 import 'package:flutter/cupertino.dart';
-import 'package:ptts_web_flutter/elements/terminal_card.dart';
-import 'package:ptts_web_flutter/pages/admin_page.dart';
+import 'package:PTTS/elements/terminal_card.dart';
+import 'admin_page.dart';
 import 'package:responsive_layout_grid/responsive_layout_grid.dart';
-import 'package:ptts_web_flutter/elements/sample_data.dart';
+import 'package:PTTS/pages/admin_page.dart';
+import 'package:PTTS/elements/sample_data.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -24,8 +25,6 @@ class _LandingPageState extends State<LandingPage> {
           fit: BoxFit.scaleDown,
           child: CupertinoButton(
             onPressed: () {
-              // ignore: avoid_print
-              print("sup gay fucker");
               Navigator.push(
                 context,
                 CupertinoPageRoute(builder: (context) => AdminPage()),

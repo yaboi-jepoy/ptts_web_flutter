@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:ptts_web_flutter/elements/db_tables.dart';
-import 'package:ptts_web_flutter/elements/terminal_image.dart';
-import 'package:ptts_web_flutter/elements/vehicles_in_terminal.dart';
+import 'package:PTTS/elements/db_tables.dart';
+import 'package:PTTS/elements/terminal_image.dart';
 
 class TerminalPage extends StatelessWidget {
   final String terminalType;

@@ -1,6 +1,6 @@
+import 'package:PTTS/pages/terminal_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ptts_web_flutter/pages/terminal_page.dart';
 
 class TerminalCard extends StatelessWidget {
   final String terminalName;
@@ -23,11 +23,10 @@ class TerminalCard extends StatelessWidget {
             Navigator.push(
               context,
               CupertinoPageRoute(
-                builder:
-                    (context) => TerminalPage(
-                      terminalType: terminalType,
-                      terminalName: terminalName,
-                    ),
+                builder: (context) => TerminalPage(
+                  terminalType: terminalType,
+                  terminalName: terminalName,
+                ),
               ),
             );
           },
