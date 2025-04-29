@@ -7,7 +7,10 @@ class TerminalImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Padding(
       padding: EdgeInsetsGeometry.all(30),
-      child: Placeholder(), // insert image here
+      child: AspectRatio(
+        aspectRatio: 4 / 3,
+        child: Placeholder(), // insert image here
+      ),
     );
   }
 }

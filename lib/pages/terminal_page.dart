@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:ptts_web_flutter/elements/db_tables.dart';
 import 'package:ptts_web_flutter/elements/terminal_image.dart';
-import 'package:ptts_web_flutter/elements/vehicles_in_terminal.dart';
 
 class TerminalPage extends StatelessWidget {
   final String terminalType;
@@ -43,7 +42,7 @@ class TerminalPage extends StatelessWidget {
         child: ConstrainedBox(
           constraints: BoxConstraints(
             // minWidth: MediaQuery.of(context).size.width * .35,
-            maxWidth: MediaQuery.of(context).size.width * .75,
+            maxWidth: MediaQuery.of(context).size.width * .3,
           ),
           child: SingleChildScrollView(
             child: Column(

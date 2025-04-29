@@ -7,7 +7,7 @@ class DbTables extends StatefulWidget {
     required this.tableTitle,
     required this.tableColumns,
     required this.tableRows,
-    this.buttonPopup = const CupertinoAlertDialog(
+    this.buttonFunction = const CupertinoAlertDialog(
       title: Text('not yet configured'),
     ),
     this.hideButton = false,
@@ -16,7 +16,7 @@ class DbTables extends StatefulWidget {
   final String tableTitle;
   final List<String> tableColumns;
   final List<List<String>> tableRows;
-  final Widget buttonPopup;
+  final Widget buttonFunction;
   final bool hideButton;
 
   @override
@@ -35,7 +35,7 @@ class _DbTablesState extends State<DbTables> {
           child: Text(
             widget.tableTitle,
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
               color: CupertinoColors.black,
             ),
@@ -81,7 +81,7 @@ class _DbTablesState extends State<DbTables> {
                 showCupertinoDialog(
                   barrierDismissible: true,
                   context: context,
-                  builder: (_) => widget.buttonPopup,
+                  builder: (_) => widget.buttonFunction,
                 );
               },
               child: FittedBox(
