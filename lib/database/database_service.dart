@@ -67,9 +67,20 @@ class DatabaseService {
     });
   }
 
-  Future<List?> getVehicles() async {
+  Future<List<List<String>>> getVehicles() async {
     final db = await database;
-    final data = await db.query(_vehiclesTableName);
-    print(data);
+    final rawData = await db.query(_vehiclesTableName);
+
+    // convert to DbTables usable format
+    // Future<List<List<String>>>
+
+    return rawData.map((row) {
+      return [
+        row['vehicle_no'].toString(),
+        row['plate_no'].toString(),
+        row['capacity'].toString(),
+        row['vehicle_type'].toString(),
+      ];
+    }).toList();
   }
 }

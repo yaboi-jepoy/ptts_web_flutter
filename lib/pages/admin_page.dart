@@ -4,10 +4,16 @@ import 'package:PTTS/elements/db_tables.dart';
 import 'package:PTTS/elements/sample_data.dart';
 
 class AdminPage extends StatefulWidget {
-  const AdminPage({super.key});
+  AdminPage({super.key});
 
   @override
   State<AdminPage> createState() => _AdminPageState();
+}
+
+// * functions
+void loadVehicles() async {
+  final rows = await DatabaseService.instance.getVehicles();
+  // i can't do setState here
 }
 
 class _AdminPageState extends State<AdminPage> {
@@ -18,6 +24,24 @@ class _AdminPageState extends State<AdminPage> {
   String? _plate;
   int _capacity = 0;
   String? _type;
+
+  // init variables
+  List<List<String>> vehicleRows = [];
+
+  @override
+  // init functions
+  void initState() {
+    super.initState();
+    loadVehicles();
+  }
+
+  // * functions
+  void loadVehicles() async {
+    final rows = await DatabaseService.instance.getVehicles();
+    setState(() {
+      vehicleRows = rows;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +77,13 @@ class _AdminPageState extends State<AdminPage> {
                 // add new vehicle
                 DbTables(
                   tableTitle: 'Vehicles',
-                  tableColumns: ['Plate', 'Capacity', 'Vehicle Type'],
-                  tableRows: vehicles,
+                  tableColumns: [
+                    'Vehicle No.',
+                    'Plate',
+                    'Capacity',
+                    'Vehicle Type',
+                  ],
+                  tableRows: vehicleRows,
                   buttonPopup: CupertinoAlertDialog(
                     title: Text("Add Vehicle"),
                     content: Column(

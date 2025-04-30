@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:PTTS/elements/terminal_card.dart';
 import 'admin_page.dart';
 import 'package:responsive_layout_grid/responsive_layout_grid.dart';
-import 'package:PTTS/pages/admin_page.dart';
 import 'package:PTTS/elements/sample_data.dart';
 
 class LandingPage extends StatefulWidget {
