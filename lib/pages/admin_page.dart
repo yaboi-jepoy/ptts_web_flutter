@@ -409,6 +409,8 @@ class _AdminPageState extends State<AdminPage> {
                             // for insertion again later
                             print('pushed $_terminal_name to table');
                             _terminal_name = null;
+
+                            loadData();
                             Navigator.pop(context);
                           },
                         ),

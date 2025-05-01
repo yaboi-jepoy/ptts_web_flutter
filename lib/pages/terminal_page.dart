@@ -3,12 +3,12 @@ import 'package:PTTS/elements/db_tables.dart';
 import 'package:PTTS/elements/terminal_image.dart';
 
 class TerminalPage extends StatelessWidget {
-  final String terminalType;
+  final String terminalID;
   final String terminalName;
 
   const TerminalPage({
     super.key,
-    required this.terminalType,
+    required this.terminalID,
     required this.terminalName,
   });
 
@@ -18,7 +18,7 @@ class TerminalPage extends StatelessWidget {
       navigationBar: CupertinoNavigationBar(
         backgroundColor: CupertinoColors.white,
         middle: Text(
-          '($terminalType) $terminalName',
+          '($terminalID) $terminalName',
           style: TextStyle(color: CupertinoColors.black),
         ),
         transitionBetweenRoutes: true,

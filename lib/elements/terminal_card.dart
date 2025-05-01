@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 class TerminalCard extends StatelessWidget {
   final String terminalName;
-  final String terminalType;
+  final String terminalID;
 
   const TerminalCard({
     super.key,
     required this.terminalName,
-    required this.terminalType,
+    required this.terminalID,
   });
 
   @override
@@ -19,12 +19,12 @@ class TerminalCard extends StatelessWidget {
         child: CupertinoButton(
           onPressed: () {
             // ignore: avoid_print
-            print("push to $terminalType - $terminalName");
+            print("push to $terminalID - $terminalName");
             Navigator.push(
               context,
               CupertinoPageRoute(
                 builder: (context) => TerminalPage(
-                  terminalType: terminalType,
+                  terminalID: terminalID,
                   terminalName: terminalName,
                 ),
               ),
@@ -56,7 +56,7 @@ class TerminalCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              terminalType,
+                              terminalID,
                               softWrap: true,
                               textAlign: TextAlign.center,
                               style: TextStyle(

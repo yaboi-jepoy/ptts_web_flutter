@@ -211,7 +211,8 @@ class DatabaseService {
     }).toList();
   }
 
-  //
+  //! deprecated functions
+  //! for debug only
 
   Future<void> printDbPath() async {
     final dbPath = await getDatabasesPath();

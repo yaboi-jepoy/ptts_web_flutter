@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:PTTS/elements/terminal_card.dart';
 import 'admin_page.dart';
 import 'package:responsive_layout_grid/responsive_layout_grid.dart';
-import 'package:PTTS/elements/sample_data.dart';
+import 'package:PTTS/database/database_service.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -16,6 +16,22 @@ class LandingPage extends StatefulWidget {
 // access database
 
 class _LandingPageState extends State<LandingPage> {
+  List<List<String>> terminalRows = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadTerminals();
+    print(terminalRows);
+  }
+
+  void loadTerminals() async {
+    final rows = await DatabaseService.instance.getTerminals();
+    setState(() {
+      terminalRows = rows;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -27,7 +43,7 @@ class _LandingPageState extends State<LandingPage> {
               Navigator.push(
                 context,
                 CupertinoPageRoute(builder: (context) => AdminPage()),
-              );
+              ).then((_) => loadTerminals());
             },
             child: Text(
               "Admin",
@@ -50,17 +66,19 @@ class _LandingPageState extends State<LandingPage> {
           maxNumberOfColumns: 4,
           layoutFactory: DefaultLayoutFactory(),
           minimumColumnWidth: 165,
-          children: [
-            ...List.generate(
-              terminals.length,
-              (index) => ResponsiveLayoutCell(
-                child: TerminalCard(
-                  terminalType: terminals[index][0],
-                  terminalName: terminals[index][1],
-                ),
-              ),
-            ),
-          ],
+          children: terminalRows.isEmpty
+              ? [Text('No Terminals in Database')]
+              : [
+                  ...List.generate(
+                    terminalRows.length,
+                    (index) => ResponsiveLayoutCell(
+                      child: TerminalCard(
+                        terminalID: terminalRows[index][0],
+                        terminalName: terminalRows[index][1],
+                      ),
+                    ),
+                  ),
+                ],
         ),
       ),
     );
