@@ -1,12 +1,12 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, no_leading_underscores_for_local_identifiers
 
 import 'package:PTTS/database/database_service.dart';
+import 'package:PTTS/elements/addTrips.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:PTTS/elements/db_tables.dart';
-import 'package:PTTS/elements/sample_data.dart';
 
 class AdminPage extends StatefulWidget {
-  AdminPage({super.key});
+  const AdminPage({super.key});
 
   @override
   State<AdminPage> createState() => _AdminPageState();
@@ -77,6 +77,7 @@ class _AdminPageState extends State<AdminPage> {
             style: TextStyle(color: CupertinoColors.black),
           ),
         ),
+        trailing: FittedBox(fit: BoxFit.scaleDown, child: AddTrips()),
       ),
       backgroundColor: CupertinoColors.white,
       child: SingleChildScrollView(
@@ -94,6 +95,7 @@ class _AdminPageState extends State<AdminPage> {
                     //! add the dummy data here
                   },
                 ),
+
                 // add new vehicle
                 DbTables(
                   tableTitle: 'Vehicles',

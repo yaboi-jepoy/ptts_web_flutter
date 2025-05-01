@@ -47,8 +47,9 @@ class DatabaseService {
           vehicle_no INTEGER PRIMARY KEY, 
           plate_no TEXT NOT NULL, 
           capacity INT, 
-          vehicle_type TEXT, 
-          terminal_id INTEGER UNIQUE, 
+          vehicle_type TEXT,
+          status TEXT,
+          terminal_id INTEGER, 
           FOREIGN KEY (terminal_id) REFERENCES $_terminalsTableName (terminal_id)
           )''');
         // drivers
@@ -65,8 +66,6 @@ class DatabaseService {
           last_name TEXT NOT NULL, 
           age INTEGER)''');
 
-        ///// TODO - these two tables will be updated later
-
         // trips
         db.execute('''CREATE TABLE $_tripsTableName(
           trip_no INTEGER PRIMARY KEY, 
@@ -75,15 +74,16 @@ class DatabaseService {
           end_terminal_id INTEGER, 
           driver_no INTEGER, 
           conductor_no INTEGER,
-          status TEXT,
           available INTEGER,
 
           FOREIGN KEY (vehicle_no) REFERENCES $_vehiclesTableName (vehicle_no),
           FOREIGN KEY (start_terminal_id) REFERENCES $_terminalsTableName (terminal_id),
           FOREIGN KEY (end_terminal_id) REFERENCES $_terminalsTableName (terminal_id),
           FOREIGN KEY (driver_no) REFERENCES $_driversTableName (driver_no),
-          FOREIGN KEY (conductor_no) REFERENCES $_conductorsTableName (conductor_no),
+          FOREIGN KEY (conductor_no) REFERENCES $_conductorsTableName (conductor_no)
           )''');
+
+        ///// TODO - these two tables will be updated later
       },
     );
     return database;
@@ -207,6 +207,40 @@ class DatabaseService {
         row['first_name'].toString(),
         row['last_name'].toString(),
         row['age'].toString(),
+      ];
+    }).toList();
+  }
+
+  Future<List<List<String>>> showTrips(int terminalId) async {
+    final db = await database;
+
+    final result = await db.rawQuery(
+      '''
+    SELECT 
+      trips.trip_no,
+      trips.vehicle_no,
+      start_terminal.terminal_name AS start_terminal_name,
+      end_terminal.terminal_name AS end_terminal_name,
+      drivers.first_name || ' ' || drivers.last_name AS driver_name,
+      conductors.first_name || ' ' || conductors.last_name AS conductor_name
+    FROM trips
+    JOIN terminals AS start_terminal ON trips.start_terminal_id = start_terminal.terminal_id
+    JOIN terminals AS end_terminal ON trips.end_terminal_id = end_terminal.terminal_id
+    JOIN drivers ON trips.driver_no = drivers.driver_no
+    JOIN conductors ON trips.conductor_no = conductors.conductor_no
+    WHERE trips.start_terminal_id = ?
+  ''',
+      [terminalId],
+    );
+
+    return result.map((row) {
+      return [
+        row['trip_no'].toString(),
+        row['vehicle_no'].toString(),
+        row['start_terminal_name'].toString(),
+        row['end_terminal_name'].toString(),
+        row['driver_name'].toString(),
+        row['conductor_name'].toString(),
       ];
     }).toList();
   }

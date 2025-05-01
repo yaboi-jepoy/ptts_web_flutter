@@ -22,7 +22,6 @@ class _LandingPageState extends State<LandingPage> {
   void initState() {
     super.initState();
     loadTerminals();
-    print(terminalRows);
   }
 
   void loadTerminals() async {

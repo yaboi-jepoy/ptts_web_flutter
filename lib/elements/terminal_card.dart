@@ -1,3 +1,4 @@
+import 'package:PTTS/database/database_service.dart';
 import 'package:PTTS/pages/terminal_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class TerminalCard extends StatelessWidget {
     return SafeArea(
       child: Center(
         child: CupertinoButton(
-          onPressed: () {
+          onPressed: () async {
             // ignore: avoid_print
             print("push to $terminalID - $terminalName");
             Navigator.push(
@@ -29,6 +30,11 @@ class TerminalCard extends StatelessWidget {
                 ),
               ),
             );
+
+            final trips = await DatabaseService.instance.showTrips(
+              int.parse(terminalID),
+            );
+            print(int.parse(terminalID));
           },
           child: Card(
             borderOnForeground: true,
