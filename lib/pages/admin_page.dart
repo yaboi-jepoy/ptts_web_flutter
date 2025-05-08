@@ -35,6 +35,13 @@ class _AdminPageState extends State<AdminPage> {
   String? _conductor_last_name;
   int? _conductor_age;
 
+  //==//==//==//==// FOR DELETE OPERATION //==//==//==//==//
+  int _todelete_vehicle = 0;
+  int _todelete_driver = 0;
+  int _todelete_conductor = 0;
+  int _todelete_terminal = 0;
+  int _todelete_trip = 0;
+
   //==//==//==//==//==//==//==//==//==//==//
 
   // init variables
@@ -89,12 +96,12 @@ class _AdminPageState extends State<AdminPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CupertinoButton(
-                  child: Text('print'),
-                  onPressed: () async {
-                    //! add the dummy data here
-                  },
-                ),
+                // CupertinoButton(
+                //   child: Text('print'),
+                //   onPressed: () async {
+                //     //! add the dummy data here
+                //   },
+                // ),
 
                 // add new vehicle
                 DbTables(
@@ -419,6 +426,253 @@ class _AdminPageState extends State<AdminPage> {
                       ],
                     ),
                   ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // del vehicles
+                    CupertinoButton(
+                      child: Text("Delete Vehicle"),
+                      onPressed: () {
+                        showCupertinoDialog(
+                          context: context,
+                          builder: (_) => CupertinoAlertDialog(
+                            title: Text("Enter Vehicle No."),
+                            content: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 16,
+                                    bottom: 4,
+                                    left: 4,
+                                    right: 4,
+                                  ),
+                                  child: CupertinoTextField(
+                                    placeholder: 'Ex. 1',
+                                    textAlign: TextAlign.center,
+                                    onChanged: (value) {
+                                      _todelete_vehicle = int.parse(value);
+                                    },
+                                  ),
+                                ),
+
+                                CupertinoButton(
+                                  child: Text('Proceed'),
+                                  onPressed: () {
+                                    // check if input is invalid
+                                    // return nothing if yes
+                                    if (_todelete_vehicle == 0) return;
+                                    // else continue
+                                    _databaseService.deleteVehicle(
+                                      _todelete_vehicle,
+                                    );
+
+                                    _todelete_vehicle = 0;
+
+                                    loadData();
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    // del drivers
+                    CupertinoButton(
+                      child: Text("Delete Driver"),
+                      onPressed: () {
+                        showCupertinoDialog(
+                          context: context,
+                          builder: (_) => CupertinoAlertDialog(
+                            title: Text("Enter Driver No."),
+                            content: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 16,
+                                    bottom: 4,
+                                    left: 4,
+                                    right: 4,
+                                  ),
+                                  child: CupertinoTextField(
+                                    placeholder: 'Ex. 1',
+                                    textAlign: TextAlign.center,
+                                    onChanged: (value) {
+                                      _todelete_driver = int.parse(value);
+                                    },
+                                  ),
+                                ),
+
+                                CupertinoButton(
+                                  child: Text('Proceed'),
+                                  onPressed: () {
+                                    // check if input is invalid
+                                    // return nothing if yes
+                                    if (_todelete_driver == 0) return;
+                                    // else continue
+                                    _databaseService.deleteDriver(
+                                      _todelete_driver,
+                                    );
+
+                                    _todelete_driver = 0;
+
+                                    loadData();
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    // del conductors
+                    CupertinoButton(
+                      child: Text("Delete Conductor"),
+                      onPressed: () {
+                        showCupertinoDialog(
+                          context: context,
+                          builder: (_) => CupertinoAlertDialog(
+                            title: Text("Enter Conductor No."),
+                            content: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 16,
+                                    bottom: 4,
+                                    left: 4,
+                                    right: 4,
+                                  ),
+                                  child: CupertinoTextField(
+                                    placeholder: 'Ex. 1',
+                                    textAlign: TextAlign.center,
+                                    onChanged: (value) {
+                                      _todelete_conductor = int.parse(value);
+                                    },
+                                  ),
+                                ),
+
+                                CupertinoButton(
+                                  child: Text('Proceed'),
+                                  onPressed: () {
+                                    // check if input is invalid
+                                    // return nothing if yes
+                                    if (_todelete_conductor == 0) return;
+                                    // else continue
+                                    _databaseService.deleteConductor(
+                                      _todelete_conductor,
+                                    );
+
+                                    _todelete_conductor = 0;
+
+                                    loadData();
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    // del terminal
+                    // CupertinoButton(
+                    //   child: Text("Delete Terminal"),
+                    //   onPressed: () {
+                    //     showCupertinoDialog(
+                    //       context: context,
+                    //       builder: (_) => CupertinoAlertDialog(
+                    //         title: Text("Enter Terminal No."),
+                    //         content: Column(
+                    //           children: [
+                    //             Padding(
+                    //               padding: const EdgeInsets.only(
+                    //                 top: 16,
+                    //                 bottom: 4,
+                    //                 left: 4,
+                    //                 right: 4,
+                    //               ),
+                    //               child: CupertinoTextField(
+                    //                 placeholder: 'Ex. 1',
+                    //                 textAlign: TextAlign.center,
+                    //                 onChanged: (value) {
+                    //                   _todelete_terminal = int.parse(value);
+                    //                 },
+                    //               ),
+                    //             ),
+
+                    //             CupertinoButton(
+                    //               child: Text('Proceed'),
+                    //               onPressed: () {
+                    //                 // check if input is invalid
+                    //                 // return nothing if yes
+                    //                 if (_todelete_terminal == 0) return;
+                    //                 // else continue
+                    //                 _databaseService.deleteTerminal(
+                    //                   _todelete_terminal,
+                    //                 );
+
+                    //                 _todelete_terminal = 0;
+
+                    //                 loadData();
+                    //                 Navigator.pop(context);
+                    //               },
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     );
+                    //   },
+                    // ),
+                    CupertinoButton(
+                      child: Text("Delete Trip"),
+                      onPressed: () {
+                        showCupertinoDialog(
+                          context: context,
+                          builder: (_) => CupertinoAlertDialog(
+                            title: Text("Enter Trip No."),
+                            content: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 16,
+                                    bottom: 4,
+                                    left: 4,
+                                    right: 4,
+                                  ),
+                                  child: CupertinoTextField(
+                                    placeholder: 'Ex. 1',
+                                    textAlign: TextAlign.center,
+                                    onChanged: (value) {
+                                      _todelete_trip = int.parse(value);
+                                    },
+                                  ),
+                                ),
+
+                                CupertinoButton(
+                                  child: Text('Proceed'),
+                                  onPressed: () {
+                                    // check if input is invalid
+                                    // return nothing if yes
+                                    if (_todelete_trip == 0) return;
+                                    // else continue
+                                    _databaseService.deleteTrip(_todelete_trip);
+
+                                    _todelete_trip = 0;
+
+                                    loadData();
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),

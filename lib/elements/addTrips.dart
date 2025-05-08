@@ -17,8 +17,8 @@ class _AddTripsState extends State<AddTrips> {
   final _conductorController = TextEditingController();
 
   // Actual selected IDs
-  int? startTerminalId;
-  int? endTerminalId;
+  late int startTerminalId;
+  late int endTerminalId;
   int? vehicleNo;
   int? driverNo;
   int? conductorNo;
@@ -150,21 +150,18 @@ class _AddTripsState extends State<AddTrips> {
         actions: [
           CupertinoDialogAction(
             child: Text('Create Trip'),
-            onPressed: () {
+            onPressed: () async {
               if (vehicleNo != null &&
-                  startTerminalId != null &&
-                  endTerminalId != null &&
                   driverNo != null &&
                   conductorNo != null) {
-                // Replace this with your real insert method
-                DatabaseService.instance.generateTrip(
+                await DatabaseService.instance.generateTrip(
                   vehicleNo!,
-                  startTerminalId.toString(),
-                  endTerminalId.toString(),
+                  startTerminalId,
+                  endTerminalId,
                   driverNo!,
                   conductorNo!,
                   'Scheduled',
-                  1,
+                  18,
                 );
                 Navigator.pop(context);
               } else {

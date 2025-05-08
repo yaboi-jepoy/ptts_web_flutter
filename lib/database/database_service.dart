@@ -27,6 +27,8 @@ class DatabaseService {
     final databaseDirPath = await getDatabasesPath();
     final databasePath = join(databaseDirPath, 'ptts.db');
 
+    print('Database path: $databasePath');
+
     // open the database
     final database = await openDatabase(
       databasePath,
@@ -38,6 +40,7 @@ class DatabaseService {
       },
       onCreate: (db, version) {
         // create table like SQL query
+        db.execute('PRAGMA foreign_keys = ON');
         // terminal
         db.execute(
           'CREATE TABLE $_terminalsTableName(terminal_id INTEGER PRIMARY KEY, terminal_name TEXT NOT NULL)',
@@ -81,7 +84,7 @@ class DatabaseService {
           FOREIGN KEY (end_terminal_id) REFERENCES $_terminalsTableName (terminal_id),
           FOREIGN KEY (driver_no) REFERENCES $_driversTableName (driver_no),
           FOREIGN KEY (conductor_no) REFERENCES $_conductorsTableName (conductor_no)
-          )''');
+        )''');
 
         ///// TODO - these two tables will be updated later
       },
@@ -129,25 +132,133 @@ class DatabaseService {
     });
   }
 
-  void generateTrip(
+  Future<void> generateTrip(
     int vehicle_no,
-    String start_terminal,
-    String end_terminal,
+    int start_terminal,
+    int end_terminal,
     int driver_no,
     int conductor_no,
     String status,
     int available,
   ) async {
     final db = await database;
+
+    // verify all foreign keys exist
+    final checks = {
+      'vehicle_no': await db.query(
+        'vehicles',
+        where: 'vehicle_no = ?',
+        whereArgs: [vehicle_no],
+      ),
+      'start_terminal': await db.query(
+        'terminals',
+        where: 'terminal_id = ?',
+        whereArgs: [start_terminal],
+      ),
+      'end_terminal': await db.query(
+        'terminals',
+        where: 'terminal_id = ?',
+        whereArgs: [end_terminal],
+      ),
+      'driver_no': await db.query(
+        'drivers',
+        where: 'driver_no = ?',
+        whereArgs: [driver_no],
+      ),
+      'conductor_no': await db.query(
+        'conductors',
+        where: 'conductor_no = ?',
+        whereArgs: [conductor_no],
+      ),
+    };
+
+    checks.forEach((key, result) {
+      if (result.isEmpty) {
+        throw Exception(
+          'Foreign key violation: $key ${key == 'vehicle_no'
+              ? vehicle_no
+              : key == 'start_terminal'
+              ? start_terminal
+              : key == 'end_terminal'
+              ? end_terminal
+              : key == 'driver_no'
+              ? driver_no
+              : conductor_no} not found',
+        );
+      }
+    });
+
     await db.insert(_tripsTableName, {
       'vehicle_no': vehicle_no,
       'start_terminal_id': start_terminal,
       'end_terminal_id': end_terminal,
       'driver_no': driver_no,
       'conductor_no': conductor_no,
-      'status': status,
+      // 'status': status,
       'available': available,
     });
+  }
+
+  // add the delete functions as requested
+  void deleteVehicle(int id) async {
+    final db = await database;
+
+    // delete related trips first
+    await db.execute('''
+          DELETE FROM $_tripsTableName WHERE vehicle_no = $id
+''');
+
+    // only then delete the vehicle
+    await db.execute('''
+          DELETE FROM $_vehiclesTableName WHERE vehicle_no = $id
+    ''');
+  }
+
+  void deleteDriver(int id) async {
+    final db = await database;
+    // delete related trips first
+    await db.execute('''
+          DELETE FROM $_tripsTableName WHERE driver_no = $id
+''');
+
+    // only then delete the driver
+    await db.execute('''
+          DELETE FROM $_driversTableName WHERE driver_no = $id
+    ''');
+  }
+
+  void deleteConductor(int id) async {
+    final db = await database;
+    // delete related trips first
+    await db.execute('''
+          DELETE FROM $_tripsTableName WHERE conductor_no = $id
+''');
+
+    // only then delete the conductor
+    await db.execute('''
+          DELETE FROM $_conductorsTableName WHERE conductor_no = $id
+    ''');
+  }
+
+  Future<void> deleteTerminal(int id) async {
+    final db = await database;
+
+    // First enable foreign keys
+    await db.execute('PRAGMA foreign_keys = ON');
+
+    // Then delete with parameter
+    await db.delete(
+      _terminalsTableName,
+      where: 'terminal_id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  void deleteTrip(int id) async {
+    final db = await database;
+    await db.execute('''
+          DELETE FROM $_tripsTableName WHERE trip_no = $id
+    ''');
   }
 
   Future<List<List<String>>> getVehicles() async {
@@ -256,5 +367,33 @@ class DatabaseService {
   Future<List<Map<String, dynamic>>> getRawData() async {
     final db = await database;
     return await db.rawQuery('SELECT vehicle_no, plate_no FROM vehicles');
+  }
+
+  //! WHY WON'T IT WORK
+  Future<void> testDatabaseOperations() async {
+    try {
+      final db = await database;
+
+      // Test simple insert
+      final testInsert = await db.insert('trips', {
+        'vehicle_no': 1,
+        'start_terminal_id': 1,
+        'end_terminal_id': 2,
+        'driver_no': 1,
+        'conductor_no': 1,
+        'status': 'Test',
+        'available': 1,
+      });
+      print('Test insert ID: $testInsert');
+
+      // Test query
+      final trips = await db.query('trips');
+      print('Trips in database: ${trips.length}');
+      for (var trip in trips) {
+        print(trip);
+      }
+    } catch (e) {
+      print('Database test failed: $e');
+    }
   }
 }
