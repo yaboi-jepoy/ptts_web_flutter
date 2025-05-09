@@ -261,6 +261,257 @@ class DatabaseService {
     ''');
   }
 
+  //==//==//==//==// UPDATE METHODS //==//==//==//==//
+  // Update functions for each table
+
+  Future<void> updateTerminal(int terminalId, String newName) async {
+    final db = await database;
+    await db.rawUpdate(
+      'UPDATE $_terminalsTableName SET terminal_name = ? WHERE terminal_id = ?',
+      [newName, terminalId],
+    );
+  }
+
+  Future<void> updateVehicle({
+    required int vehicleNo,
+    String? plateNo,
+    int? capacity,
+    String? vehicleType,
+    String? status,
+    int? terminalId,
+  }) async {
+    final db = await database;
+
+    // Build the update query dynamically based on provided parameters
+    final updates = <String>[];
+    final args = <dynamic>[];
+
+    if (plateNo != null) {
+      updates.add('plate_no = ?');
+      args.add(plateNo);
+    }
+    if (capacity != null) {
+      updates.add('capacity = ?');
+      args.add(capacity);
+    }
+    if (vehicleType != null) {
+      updates.add('vehicle_type = ?');
+      args.add(vehicleType);
+    }
+    if (status != null) {
+      updates.add('status = ?');
+      args.add(status);
+    }
+    if (terminalId != null) {
+      updates.add('terminal_id = ?');
+      args.add(terminalId);
+    }
+
+    if (updates.isEmpty) {
+      throw Exception('No fields to update');
+    }
+
+    args.add(vehicleNo);
+
+    await db.rawUpdate(
+      'UPDATE $_vehiclesTableName SET ${updates.join(', ')} WHERE vehicle_no = ?',
+      args,
+    );
+  }
+
+  Future<void> updateDriver({
+    required int driverNo,
+    String? firstName,
+    String? lastName,
+    int? age,
+  }) async {
+    final db = await database;
+
+    final updates = <String>[];
+    final args = <dynamic>[];
+
+    if (firstName != null) {
+      updates.add('first_name = ?');
+      args.add(firstName);
+    }
+    if (lastName != null) {
+      updates.add('last_name = ?');
+      args.add(lastName);
+    }
+    if (age != null) {
+      updates.add('age = ?');
+      args.add(age);
+    }
+
+    if (updates.isEmpty) {
+      throw Exception('No fields to update');
+    }
+
+    args.add(driverNo);
+
+    await db.rawUpdate(
+      'UPDATE $_driversTableName SET ${updates.join(', ')} WHERE driver_no = ?',
+      args,
+    );
+  }
+
+  Future<void> updateConductor({
+    required int conductorNo,
+    String? firstName,
+    String? lastName,
+    int? age,
+  }) async {
+    final db = await database;
+
+    final updates = <String>[];
+    final args = <dynamic>[];
+
+    if (firstName != null) {
+      updates.add('first_name = ?');
+      args.add(firstName);
+    }
+    if (lastName != null) {
+      updates.add('last_name = ?');
+      args.add(lastName);
+    }
+    if (age != null) {
+      updates.add('age = ?');
+      args.add(age);
+    }
+
+    if (updates.isEmpty) {
+      throw Exception('No fields to update');
+    }
+
+    args.add(conductorNo);
+
+    await db.rawUpdate(
+      'UPDATE $_conductorsTableName SET ${updates.join(', ')} WHERE conductor_no = ?',
+      args,
+    );
+  }
+
+  Future<void> updateTrip({
+    required int tripNo,
+    int? vehicleNo,
+    int? startTerminalId,
+    int? endTerminalId,
+    int? driverNo,
+    int? conductorNo,
+    String? status,
+    int? available,
+  }) async {
+    final db = await database;
+
+    // Verify foreign keys if they're being updated
+    if (vehicleNo != null) {
+      final vehicleCheck = await db.query(
+        _vehiclesTableName,
+        where: 'vehicle_no = ?',
+        whereArgs: [vehicleNo],
+      );
+      if (vehicleCheck.isEmpty) {
+        throw Exception(
+          'Foreign key violation: vehicle_no $vehicleNo not found',
+        );
+      }
+    }
+
+    if (startTerminalId != null) {
+      final terminalCheck = await db.query(
+        _terminalsTableName,
+        where: 'terminal_id = ?',
+        whereArgs: [startTerminalId],
+      );
+      if (terminalCheck.isEmpty) {
+        throw Exception(
+          'Foreign key violation: start_terminal_id $startTerminalId not found',
+        );
+      }
+    }
+
+    if (endTerminalId != null) {
+      final terminalCheck = await db.query(
+        _terminalsTableName,
+        where: 'terminal_id = ?',
+        whereArgs: [endTerminalId],
+      );
+      if (terminalCheck.isEmpty) {
+        throw Exception(
+          'Foreign key violation: end_terminal_id $endTerminalId not found',
+        );
+      }
+    }
+
+    if (driverNo != null) {
+      final driverCheck = await db.query(
+        _driversTableName,
+        where: 'driver_no = ?',
+        whereArgs: [driverNo],
+      );
+      if (driverCheck.isEmpty) {
+        throw Exception('Foreign key violation: driver_no $driverNo not found');
+      }
+    }
+
+    if (conductorNo != null) {
+      final conductorCheck = await db.query(
+        _conductorsTableName,
+        where: 'conductor_no = ?',
+        whereArgs: [conductorNo],
+      );
+      if (conductorCheck.isEmpty) {
+        throw Exception(
+          'Foreign key violation: conductor_no $conductorNo not found',
+        );
+      }
+    }
+
+    // Build the update query
+    final updates = <String>[];
+    final args = <dynamic>[];
+
+    if (vehicleNo != null) {
+      updates.add('vehicle_no = ?');
+      args.add(vehicleNo);
+    }
+    if (startTerminalId != null) {
+      updates.add('start_terminal_id = ?');
+      args.add(startTerminalId);
+    }
+    if (endTerminalId != null) {
+      updates.add('end_terminal_id = ?');
+      args.add(endTerminalId);
+    }
+    if (driverNo != null) {
+      updates.add('driver_no = ?');
+      args.add(driverNo);
+    }
+    if (conductorNo != null) {
+      updates.add('conductor_no = ?');
+      args.add(conductorNo);
+    }
+    if (status != null) {
+      updates.add('status = ?');
+      args.add(status);
+    }
+    if (available != null) {
+      updates.add('available = ?');
+      args.add(available);
+    }
+
+    if (updates.isEmpty) {
+      throw Exception('No fields to update');
+    }
+
+    args.add(tripNo);
+
+    await db.rawUpdate(
+      'UPDATE $_tripsTableName SET ${updates.join(', ')} WHERE trip_no = ?',
+      args,
+    );
+  }
+
   Future<List<List<String>>> getVehicles() async {
     final db = await database;
     final rawData = await db.query(_vehiclesTableName);

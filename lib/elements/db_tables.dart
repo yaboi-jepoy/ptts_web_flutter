@@ -11,6 +11,7 @@ class DbTables extends StatefulWidget {
       title: Text('not yet configured'),
     ),
     this.hideButton = false,
+    this.onRowTap,
   });
 
   final String tableTitle;
@@ -18,6 +19,7 @@ class DbTables extends StatefulWidget {
   final List<List<String>> tableRows;
   final Widget buttonPopup;
   final bool hideButton;
+  final void Function(List<String> rowData)? onRowTap;
 
   @override
   State<DbTables> createState() => _DbTablesState();
@@ -44,32 +46,33 @@ class _DbTablesState extends State<DbTables> {
         // Table
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: DataTable(
-            headingRowColor: WidgetStateProperty.all(Colors.grey[200]),
-            columns:
-                widget.tableColumns
-                    .map(
-                      (colName) => DataColumn(
-                        label: Text(
-                          colName,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
+          child: Material(
+            child: DataTable(
+              headingRowColor: WidgetStateProperty.all(Colors.grey[200]),
+              columns: widget.tableColumns
+                  .map(
+                    (colName) => DataColumn(
+                      label: Text(
+                        colName,
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    )
-                    .toList(),
-            rows:
-                widget.tableRows.map((row) {
-                  return DataRow(
-                    cells:
-                        row
-                            .map((cellValue) => DataCell(Text(cellValue)))
-                            .toList(),
-                  );
-                }).toList(),
+                    ),
+                  )
+                  .toList(),
+              rows: widget.tableRows.map((row) {
+                return DataRow(
+                  cells: row
+                      .map((cellValue) => DataCell(Text(cellValue)))
+                      .toList(),
+                  onSelectChanged: widget.onRowTap != null
+                      ? (_) => widget.onRowTap!(row)
+                      : null,
+                );
+              }).toList(),
+            ),
           ),
         ),
         // Button
-        // hide as requested
         if (!widget.hideButton)
           ConstrainedBox(
             constraints: BoxConstraints(
